@@ -9,7 +9,7 @@
   "scripts": {
     "coverage": "lab --reporter lcov --output lcov.info",
     "unit": "lab --threshold 100 test/models test/utils",
-    "test": "lab --threshold 98",
+    "test": "lab --threshold 96",
     "lint": "eslint ."
   },
   "keywords": [
