@@ -22,7 +22,9 @@ describe('Container Store', function () {
       Id: 4,
       Image: 'ubuntu',
       name: 'test-container',
-      Created: Date.now()
+      Created: Date.now(),
+      State: { Running: true },
+      Config: { Labels: { label: 'test-label' } }
     });
     containers = new ContainerStore();
     containers._store[4] = container;
@@ -84,6 +86,27 @@ describe('Container Store', function () {
           expect(containers[0]).to.deep.contain({ Id: 4, Image: 'ubuntu' });
         })
         .finally(done);
+    });
+    it('should list containers with a postive filter', function (done) {
+      var filters = {
+        status: 'running'
+      };
+      containers.listContainers(filters)
+        .then(function (containers) {
+          expect(containers).to.have.length(1);
+          expect(containers[0].State.Running).to.be.true();
+        })
+        .catch(done).done(done);
+    });
+    it('should list containers with a negative filter', function (done) {
+      var filters = {
+        label: { type: 'test-label' }
+      };
+      containers.listContainers(filters)
+        .then(function (containers) {
+          expect(containers).to.have.length(0);
+        })
+        .catch(done).done(done);
     });
   });
 
